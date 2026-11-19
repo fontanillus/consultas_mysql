@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yolanda Fontanillas">
+  <title>Jardín | SQL – Consultas de datos</title>
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="./estilos.css">
+  <script src="./consultas.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="site-header">
+    <nav aria-label="Navegación principal" class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
+      <a class="brand" href="./index.html">SQL <span>·</span> Curso SOC</a>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./nomina2.html">Nómina 2</a></li>
+        <li><a href="./jardin.html" aria-current="page">Jardín</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1">
+    <section class="hero">
+      <div class="shell py-12 sm:py-16">
+        <a class="back-link" href="./index.html">Volver al índice</a>
+        <div class="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">JARDÍN</h1>
+            <p class="mt-3 text-lg">16 ejercicios de consultas simples en MySQL.</p>
+          </div>
+          <a class="download" href="./jardineria.sql" download>Descargar jardineria.sql</a>
+        </div>
+      </div>
+    </section>
+    <section class="shell py-10 sm:py-14" aria-labelledby="ejercicios">
+      <h2 id="ejercicios" class="text-2xl font-bold tracking-tight">Ejercicios</h2>
+      <p class="mt-2 mb-5 text-slate-600">Abre un enunciado para ver su SQL.</p>
+      <p id="estado-copia" class="sr-only" role="status"></p>
+      <!-- Ejercicios transcritos de jardineria.sql, en su orden original. -->
+      <div class="grid gap-3">
+        <details class="exercise" id="ejercicio-1">
+          <summary>
+            <span class="exercise-number">1.</span>
+            <span>Devuelve un listado con el c&#243;digo de oficina y la ciudad donde hay oficinas.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 1"><code>SELECT pk_oficina, ciudad
+FROM oficina;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-2">
+          <summary>
+            <span class="exercise-number">2.</span>
+            <span>Devuelve un listado con la ciudad y el tel&#233;fono de las oficinas de Espa&#241;a.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 2"><code>SELECT ciudad, telefono
+FROM oficina
+WHERE pais = &#39;Espa&#241;a&#39;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-3">
+          <summary>
+            <span class="exercise-number">3.</span>
+            <span>Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un c&#243;digo igual a 7.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 3"><code>SELECT nombre, apellido1, apellido2, email
+FROM empleado
+WHERE fk_jefe = 7;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-4">
+          <summary>
+            <span class="exercise-number">4.</span>
+            <span>Devuelve el nombre del puesto, nombre, apellidos y email del jefe de la empresa.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 4"><code>SELECT puesto, nombre, apellido1, apellido2, email
+FROM empleado
+WHERE fk_jefe IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-5">
+          <summary>
+            <span class="exercise-number">5.</span>
+            <span>Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 5" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 5"><code>SELECT nombre, apellido1, apellido2, puesto
+FROM empleado
+WHERE puesto &lt;&gt; &#39;Representante Ventas&#39;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-6">
+          <summary>
+            <span class="exercise-number">6.</span>
+            <span>Devuelve un listado con el nombre de todos los clientes espa&#241;oles.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 6" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 6"><code>SELECT nombre_cliente
+FROM cliente
+WHERE pais = &#39;Spain&#39;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-7">
+          <summary>
+            <span class="exercise-number">7.</span>
+            <span>Devuelve un listado con los distintos estados por los que puede pasar un pedido.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 7" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 7"><code>SELECT DISTINCT estado
+FROM pedido;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-8">
+          <summary>
+            <span class="exercise-number">8.</span>
+            <span>Devuelve un listado con el c&#243;digo de cliente de aquellos clientes que realizaron alg&#250;n pago en 2008, sin mostrar c&#243;digos repetidos.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>8A. Utilizando la función YEAR de MySQL.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 8A" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 8A"><code>SELECT DISTINCT fk_cliente
+FROM pago
+WHERE YEAR(fecha_pago) = 2008;</code></pre>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>8B. Utilizando la función DATE_FORMAT de MySQL.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 8B" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 8B"><code>SELECT DISTINCT fk_cliente
+FROM pago
+WHERE DATE_FORMAT(fecha_pago, &#39;%Y&#39;) = &#39;2008&#39;;</code></pre>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>8C. Sin utilizar YEAR ni DATE_FORMAT.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 8C" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 8C"><code>SELECT DISTINCT fk_cliente
+FROM pago
+WHERE fecha_pago BETWEEN &#39;2008-01-01&#39; AND &#39;2008-12-31&#39;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-9">
+          <summary>
+            <span class="exercise-number">9.</span>
+            <span>Devuelve un listado con el c&#243;digo de pedido, c&#243;digo de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 9" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 9"><code>SELECT pk_pedido, fk_cliente, fecha_esperada, fecha_entrega
+FROM pedido
+WHERE fecha_esperada &lt; fecha_entrega;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-10">
+          <summary>
+            <span class="exercise-number">10.</span>
+            <span>Devuelve un listado con el c&#243;digo de pedido, c&#243;digo de cliente, fecha esperada y fecha de entrega de los pedidos entregados al menos dos d&#237;as antes de la fecha esperada.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>10A. Utilizando la función ADDDATE de MySQL.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 10A" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 10A"><code>SELECT pk_pedido, fk_cliente, fecha_esperada, fecha_entrega
+FROM pedido
+WHERE ADDDATE(fecha_entrega, 2) &lt;= fecha_esperada;</code></pre>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>10B. Utilizando la función DATEDIFF de MySQL.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 10B" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 10B"><code>SELECT pk_pedido, fk_cliente, fecha_esperada, fecha_entrega
+FROM pedido
+WHERE DATEDIFF(fecha_esperada, fecha_entrega) &gt;= 2;</code></pre>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>10C. Utilizando el operador de resta -.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 10C" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 10C"><code>SELECT pk_pedido, fk_cliente, fecha_esperada, fecha_entrega
+FROM pedido
+WHERE fecha_esperada - INTERVAL 2 DAY &gt;= fecha_entrega;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-11">
+          <summary>
+            <span class="exercise-number">11.</span>
+            <span>Devuelve un listado de todos los pedidos que fueron rechazados en 2009.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 11" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 11"><code>SELECT *
+FROM pedido
+WHERE estado = &#39;Rechazado&#39;
+    AND YEAR(fecha_pedido) = 2009;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-12">
+          <summary>
+            <span class="exercise-number">12.</span>
+            <span>Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier a&#241;o.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 12" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 12"><code>SELECT *
+FROM pedido
+WHERE estado = &#39;Entregado&#39;
+    AND MONTH(fecha_entrega) = 1;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-13">
+          <summary>
+            <span class="exercise-number">13.</span>
+            <span>Devuelve un listado con todos los pagos que se realizaron en el a&#241;o 2008 mediante PayPal. Ordena el resultado de mayor a menor.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 13" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 13"><code>SELECT *
+FROM pago
+WHERE YEAR(fecha_pago) = 2008
+    AND forma_pago = &#39;PayPal&#39;
+ORDER BY total DESC;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-14">
+          <summary>
+            <span class="exercise-number">14.</span>
+            <span>Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. No deben aparecer formas de pago repetidas.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 14" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 14"><code>SELECT DISTINCT forma_pago
+FROM pago;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-15">
+          <summary>
+            <span class="exercise-number">15.</span>
+            <span>Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen m&#225;s de 100 unidades en stock. Ordena el resultado por su precio de venta de mayor a menor.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 15" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 15"><code>SELECT *
+FROM producto
+WHERE fk_gama = 5
+    AND cantidad_en_stock &gt; 100
+ORDER BY precio_venta DESC;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-16">
+          <summary>
+            <span class="exercise-number">16.</span>
+            <span>Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el c&#243;digo 11 o 30.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>16A. Utilizando IN.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 16A" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 16A"><code>SELECT *
+FROM cliente
+WHERE ciudad = &#39;Madrid&#39;
+    AND fk_representante_ventas IN (11, 30);</code></pre>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>16B. Utilizando OR.</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 16B" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 16B"><code>SELECT *
+FROM cliente
+WHERE ciudad = &#39;Madrid&#39;
+    AND (fk_representante_ventas = 11
+         OR fk_representante_ventas = 30);</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell flex flex-wrap justify-between gap-x-8 gap-y-2 py-6">
+      <p>Curso SOC · Bases de Datos MySQL</p>
+      <p>Yolanda Fontanillas</p>
+    </div>
+  </footer>
+</body>
+</html>
