@@ -71,6 +71,9 @@
 }
 .exercise[open] summary::after { transform: rotate(225deg); }
 .exercise-number { color: var(--accent); font-variant-numeric: tabular-nums; }
+.exercise-notes { padding: 0 1rem 1rem; color: var(--muted); overflow-wrap: anywhere; }
+.exercise-notes p + p { margin-top: .5rem; }
+.exercise-notes ul { list-style: disc; padding-inline-start: 1.5rem; }
 .exercise-body { margin: 0 1rem 1rem; border-radius: .65rem; background: var(--ink); color: #e2e8f0; }
 .code-toolbar { padding: .625rem .9rem; border-bottom: 1px solid #3b4b60; font-size: .875rem; }
 .copy-button { padding: .3rem .7rem; border: 1px solid #72839c; border-radius: .4rem; color: #f8fafc; cursor: pointer; }

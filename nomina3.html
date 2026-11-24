@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yolanda Fontanillas">
+  <title>Nómina 3 | SQL – Consultas de datos</title>
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="./estilos.css">
+  <script src="./consultas.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="site-header">
+    <nav aria-label="Navegación principal" class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
+      <a class="brand" href="./index.html">SQL <span>·</span> Curso SOC</a>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./nomina2.html">Nómina 2</a></li>
+        <li><a href="./nomina3.html" aria-current="page">Nómina 3</a></li>
+        <li><a href="./jardin.html">Jardín</a></li>
+        <li><a href="./jardineria2.html">Jardinería 2</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1">
+    <section class="hero">
+      <div class="shell py-12 sm:py-16">
+        <a class="back-link" href="./index.html">Volver al índice</a>
+        <div class="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">NÓMINA 3</h1>
+            <p class="mt-3 text-lg">16 ejercicios de consultas multitabla e integridad referencial en MySQL.</p>
+          </div>
+          <a class="download" href="./nomina3.sql" download>Descargar nomina3.sql</a>
+        </div>
+      </div>
+    </section>
+    <section class="shell py-10 sm:py-14" aria-labelledby="ejercicios">
+      <h2 id="ejercicios" class="text-2xl font-bold tracking-tight">Ejercicios</h2>
+      <p class="mt-2 mb-5 text-slate-600">Abre un enunciado para ver la explicación, las relaciones y el SQL disponible.</p>
+      <p id="estado-copia" class="sr-only" role="status"></p>
+      <div class="grid gap-3">
+
+        <details class="exercise" id="ejercicio-1">
+          <summary>
+            <span class="exercise-number">1.</span>
+            <span>Nombre, apellido, sueldo y departamento.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>INNER JOIN enlaza cada empleado con su departamento para mostrar su nombre, apellido y sueldo.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 1"><code>SELECT
+    e.nombre,
+    e.apellido,
+    e.sueldo,
+    d.departamento
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-2">
+          <summary>
+            <span class="exercise-number">2.</span>
+            <span>Nombre, apellido, fecha de contrato y cargo.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>INNER JOIN enlaza cada empleado con su cargo y muestra la fecha de contrato.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 2"><code>SELECT
+    e.nombre,
+    e.apellido,
+    e.fecha_contrato,
+    c.cargo
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-3">
+          <summary>
+            <span class="exercise-number">3.</span>
+            <span>Mismos datos, ordenados por fecha de contrato ascendente.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>ORDER BY ordena las fechas de contrato de la más antigua a la más reciente.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 3"><code>SELECT
+    e.nombre,
+    e.apellido,
+    e.fecha_contrato,
+    c.cargo
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+ORDER BY e.fecha_contrato ASC;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-4">
+          <summary>
+            <span class="exercise-number">4.</span>
+            <span>Empleados con sueldo superior a 2000, y departamento.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>WHERE selecciona los empleados cuyo sueldo supera 2000. El INNER JOIN aporta el departamento.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 4"><code>SELECT
+    e.pk_empleado,
+    e.nombre,
+    e.apellido,
+    d.pk_departamento,
+    d.departamento
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE e.sueldo &gt; 2000;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-5">
+          <summary>
+            <span class="exercise-number">5.</span>
+            <span>Empleado más joven y cargo.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>El orden descendente deja primero la fecha de nacimiento más reciente. LIMIT 1 devuelve la primera fila.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 5" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 5"><code>SELECT
+    e.nombre,
+    e.apellido,
+    e.fecha_nacimiento,
+    c.cargo
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+ORDER BY e.fecha_nacimiento DESC
+LIMIT 1;</code></pre>
+          </div>
+        </details>
+        <details class="exercise" id="ejercicio-6">
+          <summary>
+            <span class="exercise-number">6.</span>
+            <span>Empleados que tienen hijos y departamento.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>WHERE e.hijos &gt; 0 selecciona a los empleados con al menos un hijo. El INNER JOIN aporta el departamento.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 6" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 6"><code>SELECT
+    e.nombre,
+    e.apellido,
+    e.hijos,
+    d.departamento
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE e.hijos &gt; 0;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-7">
+          <summary>
+            <span class="exercise-number">7.</span>
+            <span>Todos los datos del empleado de Contabilidad, sin SELECT *.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Se enumeran las columnas de empleado y se filtran las filas por el nombre del departamento.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 7" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 7"><code>SELECT
+    e.pk_empleado,
+    e.apellido,
+    e.nombre,
+    e.sexo,
+    e.fecha_nacimiento,
+    e.estado_civil,
+    e.hijos,
+    e.fk_cargo,
+    e.fk_departamento,
+    e.fecha_contrato,
+    e.sueldo
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE d.departamento = 'Contabilidad';</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-8">
+          <summary>
+            <span class="exercise-number">8.</span>
+            <span>Solteros sin hijos, con cargo y departamento.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Dos INNER JOIN aportan el cargo y el departamento. El filtro exige el estado civil Soltero y cero hijos.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 8" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 8"><code>SELECT
+    e.nombre,
+    e.apellido,
+    c.cargo,
+    d.departamento
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE e.estado_civil = 'Soltero'
+    AND e.hijos = 0;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-9">
+          <summary>
+            <span class="exercise-number">9.</span>
+            <span>Compras y Ventas, sin IN.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>OR admite cualquiera de los dos identificadores de departamento. El 2 corresponde a Compras y el 6 a Ventas.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 9" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 9"><code>SELECT
+    e.pk_empleado,
+    e.nombre,
+    e.apellido,
+    d.departamento
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE d.pk_departamento = 2
+    OR d.pk_departamento = 6;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-10">
+          <summary>
+            <span class="exercise-number">10.</span>
+            <span>Compras y Ventas, con IN.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>IN comprueba si el identificador del departamento está en la lista de Compras y Ventas.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 10" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 10"><code>SELECT
+    e.pk_empleado,
+    e.nombre,
+    e.apellido,
+    d.departamento
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE d.pk_departamento IN (2, 6);</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-11">
+          <summary>
+            <span class="exercise-number">11.</span>
+            <span>Más de 20 años en la empresa, ordenado por departamento ascendente y antigüedad descendente.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>TIMESTAMPDIFF calcula los años completos desde la contratación hasta hoy. Se filtran los valores mayores que 20 y, dentro de cada departamento, se ordenan primero los contratos más antiguos.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 11" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 11"><code>SELECT
+    e.nombre,
+    e.apellido,
+    c.cargo,
+    d.departamento
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE TIMESTAMPDIFF(YEAR, e.fecha_contrato, CURDATE()) &gt; 20
+ORDER BY
+    d.departamento ASC,
+    e.fecha_contrato ASC;</code></pre>
+          </div>
+        </details>
+        <details class="exercise" id="ejercicio-12">
+          <summary>
+            <span class="exercise-number">12.</span>
+            <span>Solteros, divorciados o viudos con más de un hijo.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>IN selecciona los tres estados civiles y el filtro exige más de un hijo. TIMESTAMPDIFF calcula la edad en años completos.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 12" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 12"><code>SELECT
+    e.pk_empleado,
+    e.nombre,
+    e.apellido,
+    TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE()) AS edad,
+    c.cargo,
+    d.departamento
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE e.estado_civil IN ('Soltero', 'Divorciado', 'Viudo')
+    AND e.hijos &gt; 1;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-13">
+          <summary>
+            <span class="exercise-number">13.</span>
+            <span>Todos los departamentos, incluso sin empleados.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN conserva todos los departamentos. Si un departamento carece de empleados, las columnas del empleado quedan a NULL.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 13" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 13"><code>SELECT
+    d.pk_departamento,
+    d.departamento,
+    e.nombre,
+    e.apellido
+FROM departamento AS d
+LEFT JOIN empleado AS e
+    ON d.pk_departamento = e.fk_departamento;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-14">
+          <summary>
+            <span class="exercise-number">14.</span>
+            <span>Lista todos cargos registrados que existen en la base de datos, junto con el nombre y apellido del empleado, la edad y estado civil que tiene cada empleado. El listado deberá mostrar también aquellos cargos que no tienen empleados asociados.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN conserva todos los cargos, incluidos los que carecen de empleados. TIMESTAMPDIFF calcula la edad de cada empleado asociado.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 14" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 14"><code>SELECT
+    c.cargo,
+    e.nombre,
+    e.apellido,
+    TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE()) AS edad,
+    e.estado_civil
+FROM cargo AS c
+LEFT JOIN empleado AS e
+    ON c.pk_cargo = e.fk_cargo;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-15">
+          <summary>
+            <span class="exercise-number">15.</span>
+            <span>Lista los departamentos sin empleados asociados.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN conserva todos los departamentos antes del filtro. IS NULL sobre la PK del empleado identifica los departamentos sin empleados.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_departamento → departamento.pk_departamento</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 15" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 15"><code>SELECT
+    d.pk_departamento,
+    d.departamento
+FROM departamento AS d
+LEFT JOIN empleado AS e
+    ON d.pk_departamento = e.fk_departamento
+WHERE e.pk_empleado IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-16">
+          <summary>
+            <span class="exercise-number">16.</span>
+            <span>¿Se puede asignar a un empleado un cargo que no esté registrado en la tabla de cargos? Justifica tu respuesta.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>No se puede asignar un cargo inexistente porque fk_cargo es una clave foránea que referencia pk_cargo de la tabla cargo. La restricción FOREIGN KEY garantiza la integridad referencial e impide asignar un cargo que no esté registrado.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_cargo → cargo.pk_cargo</code></li>
+            </ul>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell flex flex-wrap justify-between gap-x-8 gap-y-2 py-6">
+      <p>Curso SOC · Bases de Datos MySQL</p>
+      <p>Yolanda Fontanillas</p>
+    </div>
+  </footer>
+</body>
+</html>

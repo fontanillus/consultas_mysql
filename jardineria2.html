@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yolanda Fontanillas">
+  <title>Jardinería 2 | SQL – Consultas de datos</title>
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="./estilos.css">
+  <script src="./consultas.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="site-header">
+    <nav aria-label="Navegación principal" class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
+      <a class="brand" href="./index.html">SQL <span>·</span> Curso SOC</a>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./nomina2.html">Nómina 2</a></li>
+        <li><a href="./nomina3.html">Nómina 3</a></li>
+        <li><a href="./jardin.html">Jardín</a></li>
+        <li><a href="./jardineria2.html" aria-current="page">Jardinería 2</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1">
+    <section class="hero">
+      <div class="shell py-12 sm:py-16">
+        <a class="back-link" href="./index.html">Volver al índice</a>
+        <div class="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">JARDINERÍA 2</h1>
+            <p class="mt-3 text-lg">22 ejercicios de consultas JOIN en MySQL.</p>
+          </div>
+          <a class="download" href="./jardineria2.sql" download>Descargar jardineria2.sql</a>
+        </div>
+      </div>
+    </section>
+    <section class="shell py-10 sm:py-14" aria-labelledby="ejercicios">
+      <h2 id="ejercicios" class="text-2xl font-bold tracking-tight">Ejercicios</h2>
+      <p class="mt-2 mb-5 text-slate-600">Abre un enunciado para ver la explicación, las relaciones y el SQL disponible.</p>
+      <p id="estado-copia" class="sr-only" role="status"></p>
+      <div class="grid gap-3">
+
+        <details class="exercise" id="ejercicio-1">
+          <summary>
+            <span class="exercise-number">1.</span>
+            <span>Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Une cada cliente con su representante y muestra el nombre y el primer apellido de este.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 1"><code>SELECT
+    c.nombre_cliente,
+    e.nombre,
+    e.apellido1
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-2">
+          <summary>
+            <span class="exercise-number">2.</span>
+            <span>Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>INNER JOIN exige un pago asociado. DISTINCT elimina las filas repetidas cuando hay varios pagos.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 2"><code>SELECT DISTINCT
+    c.nombre_cliente,
+    e.nombre,
+    e.apellido1
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-3">
+          <summary>
+            <span class="exercise-number">3.</span>
+            <span>Muestra el nombre de los clientes que no hayan realizado pagos junto con el nombre de sus representantes de ventas.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN conserva clientes con representante aunque carezcan de pagos. IS NULL selecciona esos clientes.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 3"><code>SELECT
+    c.nombre_cliente,
+    e.nombre,
+    e.apellido1
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+WHERE p.fk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-4">
+          <summary>
+            <span class="exercise-number">4.</span>
+            <span>Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Los INNER JOIN enlazan clientes, representantes, pagos y oficinas. El fragmento original está incompleto porque falta la lista de columnas tras SELECT DISTINCT.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 4"><code>SELECT DISTINCT
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+INNER JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-5">
+          <summary>
+            <span class="exercise-number">5.</span>
+            <span>Devuelve el nombre de los clientes que no hayan hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN e IS NULL seleccionan clientes sin pagos. Los INNER JOIN enlazan al cliente con su representante y con la oficina de este.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 5" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 5"><code>SELECT
+ c.nombre_cliente,
+    e.nombre,
+    e.apellido1,
+    o.ciudad
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+INNER JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina   
+   WHERE p.fk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+        <details class="exercise" id="ejercicio-6">
+          <summary>
+            <span class="exercise-number">6.</span>
+            <span>Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Se filtran los clientes de Fuenlabrada y se llega a sus oficinas a través del representante. DISTINCT elimina las direcciones repetidas.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 6" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 6"><code>SELECT DISTINCT
+    o.linea_direccion1,
+    o.linea_direccion2,
+    o.ciudad
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina
+WHERE c.ciudad = 'Fuenlabrada';</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-7">
+          <summary>
+            <span class="exercise-number">7.</span>
+            <span>Devuelve el nombre de los clientes y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Los INNER JOIN enlazan clientes, representantes y oficinas para mostrar la ciudad.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 7" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 7"><code>SELECT
+    c.nombre_cliente,
+    e.nombre,
+    e.apellido1,
+    o.ciudad
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-8">
+          <summary>
+            <span class="exercise-number">8.</span>
+            <span>Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Un SELF JOIN relaciona una tabla consigo misma mediante distintos alias. Aquí e identifica al empleado y j a su jefe. LEFT JOIN conserva a los empleados sin jefe.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_jefe → empleado.pk_empleado</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 8" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 8"><code>SELECT
+    e.nombre AS empleado,
+    e.apellido1,
+    e.apellido2,
+    j.nombre AS jefe
+FROM empleado AS e
+LEFT JOIN empleado AS j
+    ON e.fk_jefe = j.pk_empleado;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-9">
+          <summary>
+            <span class="exercise-number">9.</span>
+            <span>Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Se seleccionan los pedidos entregados después de la fecha esperada. DISTINCT elimina los nombres repetidos.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>pedido.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 9" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 9"><code>SELECT DISTINCT
+    c.nombre_cliente
+FROM cliente AS c
+INNER JOIN pedido AS p
+    ON c.pk_cliente = p.fk_cliente
+WHERE p.fecha_entrega &gt; p.fecha_esperada;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-10">
+          <summary>
+            <span class="exercise-number">10.</span>
+            <span>Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Los INNER JOIN recorren pedidos, detalles, productos y gamas. DISTINCT elimina las combinaciones repetidas de nombre y gama.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>pedido.fk_cliente → cliente.pk_cliente</code></li>
+              <li><code>detalle_pedido.fk_pedido → pedido.pk_pedido</code></li>
+              <li><code>detalle_pedido.fk_producto → producto.pk_producto</code></li>
+              <li><code>producto.fk_gama → gama_producto.pk_gama</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 10" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 10"><code>SELECT DISTINCT -- Evitamos repetir la misma gama para un mismo cliente.
+    c.nombre_cliente,   -- Nombre del cliente.
+    g.gama              -- Nombre de la gama de productos.
+FROM cliente AS c       -- Empezamos por la tabla de clientes.
+INNER JOIN pedido AS pe
+    -- Relacionamos cada cliente con sus pedidos.
+    ON c.pk_cliente = pe.fk_cliente
+INNER JOIN detalle_pedido AS dp
+    -- Buscamos los productos incluidos en cada pedido.
+    ON pe.pk_pedido = dp.fk_pedido
+INNER JOIN producto AS pr
+    -- Identificamos cada producto mediante su código.
+    ON dp.fk_producto = pr.pk_producto
+INNER JOIN gama_producto AS g
+    -- Averiguamos a qué gama pertenece cada producto.
+    ON pr.fk_gama = g.pk_gama;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-11">
+          <summary>
+            <span class="exercise-number">11.</span>
+            <span>Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN e IS NULL seleccionan los clientes sin coincidencias en pago.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 11" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 11"><code>SELECT
+    c.nombre_cliente
+FROM cliente AS c
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+WHERE p.fk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+        <details class="exercise" id="ejercicio-12">
+          <summary>
+            <span class="exercise-number">12.</span>
+            <span>Devuelve un listado que muestre solamente los clientes que no han realizado ningún pedido.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN e IS NULL seleccionan los clientes sin coincidencias en pedido.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>pedido.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 12" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 12"><code>SELECT
+    c.nombre_cliente
+FROM cliente AS c
+LEFT JOIN pedido AS pe
+    ON c.pk_cliente = pe.fk_cliente
+WHERE pe.fk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-13">
+          <summary>
+            <span class="exercise-number">13.</span>
+            <span>Devuelve un listado que muestre los clientes que no han realizado ningún pago y los que no han realizado ningún pedido.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>OR conserva las filas cuando faltan pagos, pedidos o ambos. Varias coincidencias en la otra tabla pueden repetir el nombre.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+              <li><code>pedido.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 13" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 13"><code>SELECT
+    c.nombre_cliente
+FROM cliente AS c
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+LEFT JOIN pedido AS pe
+    ON c.pk_cliente = pe.fk_cliente
+WHERE p.fk_cliente IS NULL
+   OR pe.fk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-14">
+          <summary>
+            <span class="exercise-number">14.</span>
+            <span>Devuelve un listado que muestre solamente los empleados que no tienen una oficina asociada.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN e IS NULL seleccionan los empleados sin oficina asociada.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 14" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 14"><code>SELECT
+    e.nombre,
+    e.apellido1,
+    e.apellido2
+FROM empleado AS e
+LEFT JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina
+WHERE o.pk_oficina IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-15">
+          <summary>
+            <span class="exercise-number">15.</span>
+            <span>Devuelve un listado que muestre solamente los empleados que no tienen un cliente asociado.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN e IS NULL seleccionan los empleados sin clientes asociados.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 15" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 15"><code>SELECT
+    e.nombre,
+    e.apellido1,
+    e.apellido2
+FROM empleado AS e
+LEFT JOIN cliente AS c
+    ON e.pk_empleado = c.fk_representante_ventas
+WHERE c.pk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-16">
+          <summary>
+            <span class="exercise-number">16.</span>
+            <span>Devuelve un listado que muestre solamente los empleados que no tienen un cliente asociado junto con los datos de la oficina donde trabajan</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN busca clientes y oficinas. IS NULL selecciona los empleados sin clientes y se muestran los datos disponibles de su oficina.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 16" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 16"><code>SELECT
+    e.nombre,
+    e.apellido1,
+    e.apellido2,
+    o.ciudad,
+    o.telefono,
+    o.linea_direccion1
+FROM empleado AS e
+LEFT JOIN cliente AS c
+    ON e.pk_empleado = c.fk_representante_ventas
+LEFT JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina
+WHERE c.pk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-17">
+          <summary>
+            <span class="exercise-number">17.</span>
+            <span>Devuelve un listado que muestre los empleados que no tienen una oficina asociada y los que no tienen un cliente asociado</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>OR selecciona a los empleados sin oficina, sin clientes o sin ambos. DISTINCT elimina las filas repetidas.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 17" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 17"><code>SELECT DISTINCT
+    e.nombre,
+    e.apellido1,
+    e.apellido2
+FROM empleado AS e
+LEFT JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina
+LEFT JOIN cliente AS c
+    ON e.pk_empleado = c.fk_representante_ventas
+WHERE o.pk_oficina IS NULL
+    OR c.pk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+        <details class="exercise" id="ejercicio-18">
+          <summary>
+            <span class="exercise-number">18.</span>
+            <span>Devuelve un listado de los productos que nunca han aparecido en un pedido.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN busca cada producto en las líneas de pedido. IS NULL selecciona los productos ausentes.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>detalle_pedido.fk_producto → producto.pk_producto</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 18" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 18"><code>SELECT
+    p.pk_producto,
+    p.nombre
+FROM producto AS p 
+-- Conservamos todos los productos.
+LEFT JOIN detalle_pedido AS dp 
+-- Relacionamos la PK con la FK.
+    ON p.pk_producto = dp.fk_producto
+-- Seleccionamos los productos que nunca se han pedido.
+WHERE dp.fk_producto IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-19">
+          <summary>
+            <span class="exercise-number">19.</span>
+            <span>Devuelve un listado de los productos que nunca han aparecido en un pedido. El resultado debe mostrar el nombre, la descripción.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>LEFT JOIN e IS NULL seleccionan los productos ausentes de las líneas de pedido. Se muestran código, nombre y descripción. La tabla producto carece de un campo de imagen.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>detalle_pedido.fk_producto → producto.pk_producto</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 19" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 19"><code>SELECT
+    p.pk_producto,
+    p.nombre,
+    p.descripcion
+FROM producto AS p 
+-- Conservamos todos los productos.
+LEFT JOIN detalle_pedido AS dp 
+-- Relacionamos la PK con la FK.
+    ON p.pk_producto = dp.fk_producto
+-- Seleccionamos los productos que nunca se han pedido.
+WHERE dp.fk_producto IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-20">
+          <summary>
+            <span class="exercise-number">20.</span>
+            <span>Devuelve las oficinas donde no trabajan ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama Frutales.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Pendiente de subconsultas</strong></p>
+            <p>La profesora indicó que este ejercicio se retomará al estudiar subconsultas.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>empleado.fk_oficina → oficina.pk_oficina</code></li>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>pedido.fk_cliente → cliente.pk_cliente</code></li>
+              <li><code>detalle_pedido.fk_pedido → pedido.pk_pedido</code></li>
+              <li><code>detalle_pedido.fk_producto → producto.pk_producto</code></li>
+              <li><code>producto.fk_gama → gama_producto.pk_gama</code></li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-21">
+          <summary>
+            <span class="exercise-number">21.</span>
+            <span>Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>INNER JOIN exige un pedido. LEFT JOIN e IS NULL seleccionan los clientes sin pagos y DISTINCT elimina las filas repetidas.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>pedido.fk_cliente → cliente.pk_cliente</code></li>
+              <li><code>pago.fk_cliente → cliente.pk_cliente</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 21" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 21"><code>SELECT DISTINCT
+    c.pk_cliente,
+    c.nombre_cliente
+FROM cliente AS c
+INNER JOIN pedido AS pe
+    ON c.pk_cliente = pe.fk_cliente
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+WHERE p.fk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-22">
+          <summary>
+            <span class="exercise-number">22.</span>
+            <span>Devuelve un listado con los datos de los empleados que no tienen clientes asociados y el nombre de su jefe asociado.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>Un SELF JOIN relaciona una tabla consigo misma mediante distintos alias. Aquí e identifica al empleado y j a su jefe. El otro LEFT JOIN permite seleccionar a los empleados sin clientes.</p>
+            <p><strong>Tablas y relaciones (FK → PK)</strong></p>
+            <ul>
+              <li><code>cliente.fk_representante_ventas → empleado.pk_empleado</code></li>
+              <li><code>empleado.fk_jefe → empleado.pk_empleado</code></li>
+            </ul>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 22" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 22"><code>SELECT
+    e.pk_empleado,
+    e.nombre,
+    e.apellido1,
+    e.apellido2,
+    j.nombre AS nombre_jefe
+FROM empleado AS e
+LEFT JOIN cliente AS c
+    ON e.pk_empleado = c.fk_representante_ventas
+LEFT JOIN empleado AS j
+    ON e.fk_jefe = j.pk_empleado
+WHERE c.pk_cliente IS NULL;</code></pre>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell flex flex-wrap justify-between gap-x-8 gap-y-2 py-6">
+      <p>Curso SOC · Bases de Datos MySQL</p>
+      <p>Yolanda Fontanillas</p>
+    </div>
+  </footer>
+</body>
+</html>
