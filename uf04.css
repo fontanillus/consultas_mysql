@@ -1,0 +1,46 @@
+.uf04-content {
+  display: grid;
+  gap: 2rem;
+  min-width: 0;
+  padding-bottom: 2.5rem;
+}
+
+.uf04-content > section, .uf04-index { min-width: 0; }
+.uf04 :is(section, h3, h4, details)[id] { scroll-margin-top: 1rem; }
+.uf04-content a, .uf04-exercises a { color: var(--accent); text-decoration: underline; text-underline-offset: .2em; }
+.uf04 summary span { overflow-wrap: anywhere; }
+.uf04 .exercise summary { grid-template-columns: 4.5ch minmax(0, 1fr) .6rem; }
+.uf04-topic { grid-column: span 2; }
+
+.uf04-list, .uf04-list ul {
+  list-style: disc;
+  padding-inline-start: 1.4rem;
+  margin-block: .5rem;
+}
+
+.uf04-index { overflow-wrap: anywhere; }
+.uf04-index li, .uf04-list li { margin-block: .3rem; }
+.uf04-table { overflow-x: auto; margin-top: .75rem; }
+.uf04-table table { width: 100%; border-collapse: collapse; }
+.uf04-table :is(th, td) { border-bottom: 1px solid var(--line); padding: .65rem; text-align: left; vertical-align: top; }
+.uf04-table thead { background: #f0fdfa; }
+
+.uf04-capture { margin-block: .5rem; }
+.uf04-capture img { max-width: min(100%, 32rem); max-height: 16rem; margin-bottom: .35rem; }
+.uf04-capture a { display: inline-block; }
+.uf04-capture img, #captura-ampliada img { border: 1px solid var(--line); border-radius: .45rem; }
+#captura-ampliada {
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: .9rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+#captura-ampliada::backdrop { background: #111a2ccd; }
+#captura-ampliada button { padding: .35rem .7rem; border: 1px solid var(--accent); border-radius: .4rem; color: var(--accent); cursor: pointer; }
+#captura-ampliada img { max-width: 100%; max-height: 78vh; object-fit: contain; margin-top: .75rem; }

@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yolanda Fontanillas">
+  <title>Jardinería 3 | SQL – Consultas de datos</title>
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="./estilos.css">
+  <script src="./consultas.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="site-header">
+    <nav aria-label="Navegación principal" class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
+      <a class="brand" href="./index.html">SQL <span>·</span> Curso SOC</a>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./nomina2.html">Nómina 2</a></li>
+        <li><a href="./nomina3.html">Nómina 3</a></li>
+        <li><a href="./jardin.html">Jardín</a></li>
+        <li><a href="./jardineria2.html">Jardinería 2</a></li>
+        <li><a href="./jardineria3.html" aria-current="page">Jardinería 3</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1">
+    <section class="hero">
+      <div class="shell py-12 sm:py-16">
+        <a class="back-link" href="./index.html">Volver al índice</a>
+        <div class="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">JARDINERÍA 3</h1>
+            <p class="mt-3 text-lg">15 apartados sobre vistas, creación de tablas y variables de sesión en MySQL.</p>
+          </div>
+          <a class="download" href="./jardineria3.sql" download>Descargar jardineria3.sql</a>
+        </div>
+      </div>
+    </section>
+    <section class="shell py-10 sm:py-14" aria-labelledby="ejercicios">
+      <h2 id="ejercicios" class="text-2xl font-bold tracking-tight">Ejercicios</h2>
+      <p class="mt-2 mb-5 text-slate-600">Abre un enunciado para ver la explicación y la solución SQL.</p>
+      <p id="estado-copia" class="sr-only" role="status"></p>
+      <div class="grid gap-3">
+
+        <details class="exercise" id="apartado-1">
+          <summary>
+            <span class="exercise-number">1.</span>
+            <span>Crear una vista llamada pedidos_no_entregados que muestre el c&#243;digo del pedido, la fecha del pedido, el nombre completo del cliente y el estado. Mostrar &#250;nicamente los pedidos no entregados. Ordenar por estado.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>INNER JOIN vincula cada pedido con su cliente. El filtro excluye el estado Entregado y ORDER BY ordena por estado.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 1"><code>CREATE OR REPLACE VIEW pedidos_no_entregados AS
+SELECT
+    p.pk_pedido AS codigo_pedido,
+    p.fecha_pedido,
+    CONCAT(
+    c.nombre_cliente, &#39; - &#39;,
+    c.nombre_contacto, &#39; &#39;,
+    c.apellido_contacto
+) AS nombre_completo,
+    p.estado
+FROM pedido AS p
+INNER JOIN cliente AS c
+    ON p.fk_cliente = c.pk_cliente
+WHERE p.estado &lt;&gt; &#39;Entregado&#39;
+ORDER BY p.estado ASC;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM pedidos_no_entregados;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-2">
+          <summary>
+            <span class="exercise-number">2.</span>
+            <span>Crear una vista llamada listado_pagos_clientes. Mostrar todos los clientes y sus pagos. Columnas: nombre y apellidos concatenados, tel&#233;fono, ciudad, pa&#237;s, fecha_pago, total del pago e id de la transacci&#243;n.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>LEFT JOIN conserva a todos los clientes. Las columnas del pago contienen NULL cuando el cliente carece de pagos.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 2"><code>CREATE OR REPLACE VIEW listado_pagos_clientes AS
+SELECT
+    CONCAT(
+        c.nombre_cliente, &#39; - &#39;,
+        c.nombre_contacto, &#39; &#39;,
+        c.apellido_contacto
+    ) AS nombre_completo,
+    c.telefono,
+    c.ciudad,
+    c.pais,
+    p.fecha_pago,
+    p.total,
+    p.id_transaccion
+FROM cliente AS c
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM listado_pagos_clientes;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-3">
+          <summary>
+            <span class="exercise-number">3.</span>
+            <span>Crear la vista listado_pedidos_clientes. Mostrar todos los clientes y los pedidos que han realizado, incluyendo los clientes que no tienen pedidos.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>LEFT JOIN conserva a los clientes sin pedidos. Sus columnas de pedido contienen NULL.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 3"><code>CREATE OR REPLACE VIEW listado_pedidos_clientes AS
+SELECT
+    c.pk_cliente AS codigo_cliente,
+    CONCAT(
+        c.nombre_cliente, &#39; - &#39;,
+        c.nombre_contacto, &#39; &#39;,
+        c.apellido_contacto
+    ) AS nombre_completo,
+    c.telefono,
+    c.ciudad,
+    c.pais,
+    p.pk_pedido AS codigo_pedido,
+    p.fecha_pedido,
+    p.fecha_esperada,
+    p.fecha_entrega
+FROM cliente AS c
+LEFT JOIN pedido AS p
+    ON c.pk_cliente = p.fk_cliente;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM listado_pedidos_clientes;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-4">
+          <summary>
+            <span class="exercise-number">4.</span>
+            <span>Crear una variable de sesi&#243;n denominada @ciudad. Mostrar los clientes de Madrid que han realizado pagos.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>SET asigna Madrid a la variable de la conexión. El filtro exige un identificador de transacción y DISTINCT elimina filas repetidas.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 4"><code>SET @ciudad = &#39;Madrid&#39;;
+
+SELECT DISTINCT
+    nombre_completo,
+    telefono,
+    ciudad,
+    pais
+FROM listado_pagos_clientes
+WHERE ciudad = @ciudad
+    AND id_transaccion IS NOT NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-5">
+          <summary>
+            <span class="exercise-number">5.</span>
+            <span>Cambiar el valor de la variable @ciudad a Miami y repetir la consulta anterior.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>La misma consulta usa el valor Miami asignado con SET en la conexión activa.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 5" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 5"><code>SET @ciudad = &#39;Miami&#39;;
+
+SELECT DISTINCT
+    nombre_completo,
+    telefono,
+    ciudad,
+    pais
+FROM listado_pagos_clientes
+WHERE ciudad = @ciudad
+    AND id_transaccion IS NOT NULL;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-1">
+          <summary>
+            <span class="exercise-number">6.1.</span>
+            <span>Empleados con m&#225;s de 20 a&#241;os de antig&#252;edad.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>nomina3</code></p>
+            <p>TIMESTAMPDIFF calcula los años completos desde la fecha de contrato hasta CURDATE(). El filtro exige más de 20 años.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.1"><code>CREATE OR REPLACE VIEW empleados_antiguedad AS
+SELECT
+    e.nombre,
+    e.apellido,
+    d.departamento,
+    e.fecha_contrato,
+    TIMESTAMPDIFF(
+        YEAR, e.fecha_contrato, CURDATE()
+    ) AS antiguedad
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE TIMESTAMPDIFF(
+    YEAR, e.fecha_contrato, CURDATE()
+) &gt; 20;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM empleados_antiguedad;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-2">
+          <summary>
+            <span class="exercise-number">6.2.</span>
+            <span>Empleados solteros, divorciados o viudos con m&#225;s de un hijo.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>nomina3</code></p>
+            <p>IN agrupa los tres estados civiles admitidos. El segundo filtro exige más de un hijo y TIMESTAMPDIFF calcula la edad.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.2"><code>CREATE OR REPLACE VIEW empleados_estado_civil_hijos AS
+SELECT
+    e.nombre,
+    e.apellido,
+    e.estado_civil,
+    e.hijos,
+    d.departamento,
+    TIMESTAMPDIFF(
+        YEAR, e.fecha_nacimiento, CURDATE()
+    ) AS edad
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+WHERE e.estado_civil IN (
+    &#39;Soltero&#39;, &#39;Divorciado&#39;, &#39;Viudo&#39;
+)
+    AND e.hijos &gt; 1;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM empleados_estado_civil_hijos;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-3">
+          <summary>
+            <span class="exercise-number">6.3.</span>
+            <span>Mostrar todos los cargos y sus empleados, incluyendo los cargos sin empleados.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>nomina3</code></p>
+            <p>LEFT JOIN conserva también los cargos que carecen de empleados. Sus columnas de empleado contienen NULL.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.3"><code>CREATE OR REPLACE VIEW cargos_empleados AS
+SELECT
+    c.cargo,
+    e.nombre,
+    e.apellido,
+    TIMESTAMPDIFF(
+        YEAR, e.fecha_nacimiento, CURDATE()
+    ) AS edad,
+    e.estado_civil
+FROM cargo AS c
+LEFT JOIN empleado AS e
+    ON c.pk_cargo = e.fk_cargo;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM cargos_empleados;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-4">
+          <summary>
+            <span class="exercise-number">6.4.</span>
+            <span>Mostrar los departamentos que no tienen empleados.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>nomina3</code></p>
+            <p>LEFT JOIN conserva todos los departamentos. IS NULL selecciona los que carecen de una fila de empleado asociada.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.4"><code>CREATE OR REPLACE VIEW departamentos_sin_empleados AS
+SELECT
+    d.pk_departamento,
+    d.departamento
+FROM departamento AS d
+LEFT JOIN empleado AS e
+    ON d.pk_departamento = e.fk_departamento
+WHERE e.pk_empleado IS NULL;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM departamentos_sin_empleados;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-5">
+          <summary>
+            <span class="exercise-number">6.5.</span>
+            <span>Mostrar los clientes que han realizado pagos y sus representantes de ventas.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>INNER JOIN requiere una coincidencia con el representante y con algún pago. DISTINCT evita repetir la misma pareja de cliente y representante por cada pago.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.5" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.5"><code>CREATE OR REPLACE VIEW clientes_con_pagos AS
+SELECT DISTINCT
+    c.nombre_cliente,
+    CONCAT(
+        e.nombre, &#39; &#39;, e.apellido1
+    ) AS representante
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM clientes_con_pagos;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-6">
+          <summary>
+            <span class="exercise-number">6.6.</span>
+            <span>Mostrar los clientes que no han realizado pagos y sus representantes de ventas.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>INNER JOIN exige un representante. LEFT JOIN e IS NULL permiten localizar la ausencia de pagos.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.6" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.6"><code>CREATE OR REPLACE VIEW clientes_sin_pagos AS
+SELECT
+    c.nombre_cliente,
+    CONCAT(
+        e.nombre, &#39; &#39;, e.apellido1
+    ) AS representante
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+WHERE p.fk_cliente IS NULL;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM clientes_sin_pagos;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-7">
+          <summary>
+            <span class="exercise-number">6.7.</span>
+            <span>Mostrar los clientes que han realizado pagos, sus representantes y la ciudad de la oficina.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>La oficina se obtiene a partir del representante. Su ciudad aparece con el alias ciudad_oficina.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.7" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.7"><code>CREATE OR REPLACE VIEW clientes_con_pagos_oficina AS
+SELECT DISTINCT
+    c.nombre_cliente,
+    CONCAT(
+        e.nombre, &#39; &#39;, e.apellido1
+    ) AS representante,
+    o.ciudad AS ciudad_oficina
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina
+INNER JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM clientes_con_pagos_oficina;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-6-8">
+          <summary>
+            <span class="exercise-number">6.8.</span>
+            <span>Mostrar los clientes que no han realizado pagos, sus representantes y la ciudad de la oficina.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>La consulta requiere representante y oficina. LEFT JOIN e IS NULL identifican a los clientes sin pagos.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 6.8" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 6.8"><code>CREATE OR REPLACE VIEW clientes_sin_pagos_oficina AS
+SELECT
+    c.nombre_cliente,
+    CONCAT(
+        e.nombre, &#39; &#39;, e.apellido1
+    ) AS representante,
+    o.ciudad AS ciudad_oficina
+FROM cliente AS c
+INNER JOIN empleado AS e
+    ON c.fk_representante_ventas = e.pk_empleado
+INNER JOIN oficina AS o
+    ON e.fk_oficina = o.pk_oficina
+LEFT JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente
+WHERE p.fk_cliente IS NULL;
+
+-- Verificaci&#243;n de la vista
+SELECT *
+FROM clientes_sin_pagos_oficina;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-7">
+          <summary>
+            <span class="exercise-number">7.</span>
+            <span>Eliminar la vista listado_pedidos_clientes de la base de datos jardineria3.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria3</code></p>
+            <p>DROP VIEW elimina la definición de la vista. El listado posterior se limita a los objetos de tipo VIEW.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 7" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 7"><code>USE jardineria3;
+
+DROP VIEW listado_pedidos_clientes;
+
+-- Verificaci&#243;n de las vistas existentes
+SHOW FULL TABLES
+WHERE table_type = &#39;VIEW&#39;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="apartado-8">
+          <summary>
+            <span class="exercise-number">8.</span>
+            <span>Crear una nueva tabla con el resultado de una vista basada en las consultas multitabla del ejercicio 9. Vista seleccionada: departamentos_sin_empleados.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>nomina3</code></p>
+            <p>La tabla almacena las filas disponibles en la vista al ejecutar la sentencia. DESCRIBE permite revisar sus columnas.</p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del apartado 8" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del apartado 8"><code>USE nomina3;
+
+CREATE TABLE tabla_departamentos_sin_empleados AS
+SELECT
+    pk_departamento,
+    departamento
+FROM departamentos_sin_empleados;
+
+-- Verificaci&#243;n de la tabla creada
+SELECT *
+FROM tabla_departamentos_sin_empleados;
+
+-- Consultar la estructura de la nueva tabla
+DESCRIBE tabla_departamentos_sin_empleados;</code></pre>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell flex flex-wrap justify-between gap-x-8 gap-y-2 py-6">
+      <p>Curso SOC · Bases de Datos MySQL</p>
+      <p>Yolanda Fontanillas</p>
+    </div>
+  </footer>
+</body>
+</html>

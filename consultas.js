@@ -2,7 +2,7 @@
 
 // El resaltado conserva el texto original de la consulta y solo añade etiquetas.
 const sqlTokens = /(--[^\r\n]*)|('(?:''|[^'])*')|\b(\d+)\b|\b([A-Z_][A-Z_0-9]*)\b/gi;
-const keywords = new Set("SELECT FROM AS DISTINCT ORDER BY ASC DESC LIMIT OFFSET USE WHERE NOT AND OR BETWEEN IN LIKE DESCRIBE YEAR IS NULL INTERVAL DAY INNER JOIN ON".split(" "));
+const keywords = new Set("SELECT FROM AS DISTINCT ORDER BY ASC DESC LIMIT OFFSET USE WHERE NOT AND OR BETWEEN IN LIKE DESCRIBE YEAR IS NULL INTERVAL DAY INNER JOIN ON CREATE VIEW REPLACE DROP IF EXISTS SET INTO TABLE SHOW FULL TABLES".split(" "));
 const sqlFunctions = new Set("COUNT UPPER LOWER CONCAT LEFT TIMESTAMPDIFF CURDATE MONTH CHAR_LENGTH DATE_FORMAT ADDDATE DATEDIFF".split(" "));
 const statusMessage = document.querySelector("#estado-copia");
 
