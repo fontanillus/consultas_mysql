@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yolanda Fontanillas">
+  <title>Consultas de resumen y funciones de agregación – Nómina 4</title>
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="./estilos.css">
+  <script src="./consultas.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="site-header">
+    <nav aria-label="Navegación principal" class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
+      <a class="brand" href="./index.html">SQL <span>·</span> Curso SOC</a>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./nomina2.html">Nómina 2</a></li>
+        <li><a href="./nomina3.html">Nómina 3</a></li>
+        <li><a href="./jardin.html">Jardín</a></li>
+        <li><a href="./jardineria2.html">Jardinería 2</a></li>
+        <li><a href="./jardineria3.html">Jardinería 3</a></li>
+        <li><a href="./nomina4.html" aria-current="page">Nómina 4</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1">
+    <section class="hero">
+      <div class="shell py-12 sm:py-16">
+        <a class="back-link" href="./index.html">Volver al índice</a>
+        <div class="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">Consultas de resumen y funciones de agregación – Nómina 4</h1>
+            <p class="mt-3 text-lg">Nivel intermedio · 24 ejercicios</p>
+          </div>
+          <a class="download" href="./nomina4.sql" download>Descargar nomina4.sql</a>
+        </div>
+      </div>
+    </section>
+    <section class="shell py-10 sm:py-14" aria-labelledby="ejercicios">
+      <h2 id="ejercicios" class="text-2xl font-bold tracking-tight">Ejercicios</h2>
+      <p class="mt-2 mb-5 text-slate-600">Abre un enunciado para ver su solución.</p>
+      <p id="estado-copia" class="sr-only" role="status"></p>
+      <div class="grid gap-3">
+
+        <details class="exercise" id="ejercicio-1">
+          <summary>
+            <span class="exercise-number">1.</span>
+            <span>Calcula el número total de empleados que hay en la tabla empleado.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 1"><code>SELECT COUNT(*) AS total_empleados
+FROM empleado;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-2">
+          <summary>
+            <span class="exercise-number">2.</span>
+            <span>Calcula el número total de departamentos que hay en la tabla departamento.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 2"><code>SELECT
+    COUNT(*) AS num_departamentos
+FROM departamento;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-3">
+          <summary>
+            <span class="exercise-number">3.</span>
+            <span>Calcula la media de sueldo de todos los empleados.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 3"><code>SELECT AVG(sueldo) AS sueldo_promedio
+FROM empleado;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-4">
+          <summary>
+            <span class="exercise-number">4.</span>
+            <span>Indica quién es el empleado más joven.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 4"><code>SELECT
+    nombre,
+    apellido
+FROM empleado
+WHERE fecha_nacimiento = (
+    SELECT MAX(fecha_nacimiento)
+    FROM empleado
+);</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-5">
+          <summary>
+            <span class="exercise-number">5.</span>
+            <span>Indica quién es el empleado menos joven.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 5" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 5"><code>SELECT
+    nombre,
+    apellido
+FROM empleado
+WHERE fecha_nacimiento = (
+    SELECT MIN(fecha_nacimiento)
+    FROM empleado
+);</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-6">
+          <summary>
+            <span class="exercise-number">6.</span>
+            <span>Calcula el número total de empleados por estado civil.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 6" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 6"><code>SELECT
+    estado_civil,
+    COUNT(*) AS total_empleados
+FROM empleado
+GROUP BY estado_civil;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-7">
+          <summary>
+            <span class="exercise-number">7.</span>
+            <span>Muestra el número de empleados que han ingresado cada año a la empresa.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 7" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 7"><code>SELECT
+    YEAR(fecha_contrato) AS anio,
+    COUNT(*) AS total_empleados
+FROM empleado
+GROUP BY YEAR(fecha_contrato);</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-8">
+          <summary>
+            <span class="exercise-number">8.</span>
+            <span>Lista el nombre y el precio del producto más caro.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 8" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 8"><code>USE jardineria3;
+
+SELECT
+    nombre,
+    precio_venta
+FROM producto
+WHERE precio_venta = (
+    SELECT MAX(precio_venta)
+    FROM producto
+);</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-9">
+          <summary>
+            <span class="exercise-number">9.</span>
+            <span>Calcula la suma de los salarios de los empleados por departamento.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 9" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 9"><code>SELECT
+    d.departamento,
+    SUM(e.sueldo) AS total_sueldos
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+GROUP BY d.departamento;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-10">
+          <summary>
+            <span class="exercise-number">10.</span>
+            <span>Calcula la suma de los salarios de los empleados por sexo.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 10" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 10"><code>SELECT
+    sexo,
+    SUM(sueldo) AS total_sueldos
+FROM empleado
+GROUP BY sexo;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-11">
+          <summary>
+            <span class="exercise-number">11.</span>
+            <span>Calcula el número de empleados que son Asistentes.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 11" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 11"><code>SELECT
+    COUNT(*) AS total_empleados
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+WHERE c.cargo = &apos;Asistente&apos;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-12">
+          <summary>
+            <span class="exercise-number">12.</span>
+            <span>Calcula la media de hijos de los empleados por sexo y estado civil.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 12" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 12"><code>SELECT
+    sexo,
+    estado_civil,
+    AVG(hijos) AS media_hijos
+FROM empleado
+GROUP BY sexo, estado_civil;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-13">
+          <summary>
+            <span class="exercise-number">13.</span>
+            <span>Calcula el sueldo más bajo de los Analistas.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 13" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 13"><code>SELECT
+    MIN(e.sueldo) AS sueldo_menor
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+WHERE c.cargo = &apos;Analista&apos;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-14">
+          <summary>
+            <span class="exercise-number">14.</span>
+            <span>Calcula el sueldo más alto de los Analistas.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 14" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 14"><code>SELECT
+    MAX(e.sueldo) AS sueldo_mayor
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+WHERE c.cargo = &apos;Analista&apos;;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-15">
+          <summary>
+            <span class="exercise-number">15.</span>
+            <span>Muestra el sueldo máximo, sueldo mínimo, sueldo promedio y el número total de empleados por cargo.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 15" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 15"><code>SELECT
+    c.cargo,
+    MAX(e.sueldo) AS sueldo_mayor,
+    MIN(e.sueldo) AS sueldo_menor,
+    AVG(e.sueldo) AS sueldo_promedio,
+    COUNT(*) AS total_empleados
+FROM empleado AS e
+INNER JOIN cargo AS c
+    ON e.fk_cargo = c.pk_cargo
+GROUP BY c.cargo;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-16">
+          <summary>
+            <span class="exercise-number">16.</span>
+            <span>Muestra el sueldo máximo, sueldo mínimo, sueldo promedio y el número total de empleados por departamento, ordenando de forma descendente por el sueldo promedio.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 16" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 16"><code>SELECT
+    d.departamento,
+    MAX(e.sueldo) AS sueldo_mayor,
+    MIN(e.sueldo) AS sueldo_menor,
+    AVG(e.sueldo) AS sueldo_promedio,
+    COUNT(*) AS total_empleados
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+GROUP BY d.departamento
+ORDER BY sueldo_promedio DESC;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-17">
+          <summary>
+            <span class="exercise-number">17.</span>
+            <span>Muestra la edad máxima, edad mínima, edad promedio y el número total de empleados de los departamentos que tienen una edad promedio superior a los 45 años.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 17" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 17"><code>SELECT
+    d.departamento,
+    MAX(TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE())) AS edad_maxima,
+    MIN(TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE())) AS edad_minima,
+    AVG(TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE())) AS edad_promedio,
+    COUNT(*) AS total_empleados
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+GROUP BY d.departamento
+HAVING edad_promedio &gt; 45;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-18">
+          <summary>
+            <span class="exercise-number">18.</span>
+            <span>Calcula el número de empleados que tienen un sueldo mayor o igual a 1800€.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 18" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 18"><code>SELECT
+    COUNT(*) AS total_empleados
+FROM empleado
+WHERE sueldo &gt;= 1800;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-19">
+          <summary>
+            <span class="exercise-number">19.</span>
+            <span>Calcula el número de empleados que tienen una edad menor o igual a 28 años.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 19" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 19"><code>SELECT
+    COUNT(*) AS total_empleados
+FROM empleado AS e
+WHERE (TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE())) &lt;= 28;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-20">
+          <summary>
+            <span class="exercise-number">20.</span>
+            <span>Lista los nombres de los departamentos cuyos empleados tienen una edad promedio mayor o igual a 35 años.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 20" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 20"><code>SELECT
+    d.departamento,
+    AVG(TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE())) AS edad_promedio
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+GROUP BY d.departamento
+HAVING edad_promedio &gt;= 35;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-21">
+          <summary>
+            <span class="exercise-number">21.</span>
+            <span>Devuelve un listado con los nombres de los cargos que tienen 5 o más empleados.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 21" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 21"><code>SELECT
+    c.cargo
+FROM cargo AS c
+INNER JOIN empleado AS e
+    ON e.fk_cargo = c.pk_cargo
+GROUP BY c.cargo
+HAVING COUNT(*) &gt;= 5;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-22">
+          <summary>
+            <span class="exercise-number">22.</span>
+            <span>Devuelve un listado con los nombres de los departamentos donde el promedio de edad sea superior a 40 años.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 22" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 22"><code>SELECT
+    d.departamento,
+    AVG(TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE())) AS edad_promedio
+FROM empleado AS e
+INNER JOIN departamento AS d
+    ON e.fk_departamento = d.pk_departamento
+GROUP BY d.departamento
+HAVING edad_promedio &gt; 40;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-23">
+          <summary>
+            <span class="exercise-number">23.</span>
+            <span>Muestra el número total de empleados que tiene cada departamento, incluyendo los departamentos que no tienen ningún empleado. El resultado mostrará dos columnas: nombre del departamento y número de empleados, ordenadas descendentemente por el número de empleados.</span>
+          </summary>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 23" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 23"><code>SELECT
+    d.departamento,
+    COUNT(e.pk_empleado) AS total_empleados
+FROM departamento AS d
+LEFT JOIN empleado AS e
+    ON e.fk_departamento = d.pk_departamento
+GROUP BY d.departamento
+ORDER BY total_empleados DESC;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-24">
+          <summary>
+            <span class="exercise-number">24.</span>
+            <span>Explica las diferencias entre las cláusulas WHERE y HAVING, y cuándo utilizar cada una de ellas.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p>WHERE filtra registros individuales antes de la agrupación.</p>
+            <p>HAVING filtra los resultados agrupados después de la agrupación.</p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell flex flex-wrap justify-between gap-x-8 gap-y-2 py-6">
+      <p>Curso SOC · Bases de Datos MySQL</p>
+      <p>Yolanda Fontanillas</p>
+    </div>
+  </footer>
+</body>
+</html>
