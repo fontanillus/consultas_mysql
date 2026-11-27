@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Yolanda Fontanillas">
+  <title>Operaciones de conjunto – Jardinería 4</title>
+  <link rel="stylesheet" href="./tailwind.css">
+  <link rel="stylesheet" href="./estilos.css">
+  <script src="./consultas.js" defer></script>
+</head>
+<body class="flex min-h-screen flex-col bg-slate-50 text-slate-900">
+  <header class="site-header">
+    <nav aria-label="Navegación principal" class="shell flex flex-wrap items-center justify-between gap-x-6 gap-y-3 py-4">
+      <a class="brand" href="./index.html">SQL <span>·</span> Curso SOC</a>
+      <ul class="flex flex-wrap items-center gap-x-4 gap-y-2 sm:gap-x-6">
+        <li><a href="./index.html">Inicio</a></li>
+        <li><a href="./nomina2.html">Nómina 2</a></li>
+        <li><a href="./nomina3.html">Nómina 3</a></li>
+        <li><a href="./jardin.html">Jardín</a></li>
+        <li><a href="./jardineria2.html">Jardinería 2</a></li>
+        <li><a href="./jardineria3.html">Jardinería 3</a></li>
+        <li><a href="./nomina4.html">Nómina 4</a></li>
+        <li><a href="./jardineria4.html" aria-current="page">Jardinería 4</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1">
+    <section class="hero">
+      <div class="shell py-12 sm:py-16">
+        <a class="back-link" href="./index.html">Volver al índice</a>
+        <div class="mt-4 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">Operaciones de conjunto – Jardinería 4</h1>
+            <p class="mt-3 text-lg">4 ejercicios con UNION, EXCEPT e INTERSECT sobre la base de datos jardineria4.</p>
+          </div>
+          <a class="download" href="./jardineria4.sql" download>Descargar jardineria4.sql</a>
+        </div>
+      </div>
+    </section>
+    <section class="shell py-10 sm:py-14" aria-labelledby="ejercicios">
+      <h2 id="ejercicios" class="text-2xl font-bold tracking-tight">Ejercicios</h2>
+      <p class="mt-2 mb-5 text-slate-600">Abre un enunciado para ver su solución.</p>
+      <p id="estado-copia" class="sr-only" role="status"></p>
+      <div class="grid gap-3">
+
+        <details class="exercise" id="ejercicio-1">
+          <summary>
+            <span class="exercise-number">1.</span>
+            <span>Crear una vista llamada vista_contactos mediante UNION utilizando las tablas cliente, empleado y oficina. Mostrar inicial, id, contacto, tipo y telefono. Ordenar por apellido.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria4</code></p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 1" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 1"><code>USE jardineria4;
+
+CREATE OR REPLACE VIEW vista_contactos AS
+SELECT
+    inicial,
+    id,
+    contacto,
+    tipo,
+    telefono
+FROM (
+    SELECT
+        LEFT(c.apellido_contacto, 1) AS inicial,
+        LPAD(c.pk_cliente, 3, &#39;0&#39;) AS id,
+        CONCAT(c.nombre_contacto, &#39; &#39;, c.apellido_contacto) AS contacto,
+        &#39;cliente&#39; AS tipo,
+        c.telefono,
+        c.apellido_contacto AS apellido
+    FROM cliente AS c
+
+    UNION
+
+    SELECT
+        LEFT(e.apellido1, 1) AS inicial,
+        LPAD(e.pk_empleado, 3, &#39;0&#39;) AS id,
+        CONCAT_WS(&#39; &#39;, e.nombre, e.apellido1, e.apellido2) AS contacto,
+        &#39;empleado&#39; AS tipo,
+        o.telefono,
+        e.apellido1 AS apellido
+    FROM empleado AS e
+    INNER JOIN oficina AS o
+        ON e.fk_oficina = o.pk_oficina
+) AS contactos
+ORDER BY apellido;
+
+-- Verificar la vista
+
+SELECT *
+FROM vista_contactos;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-2">
+          <summary>
+            <span class="exercise-number">2.</span>
+            <span>Crear la vista clientes_morosos. Mostrar los códigos de clientes que tengan pedidos entregados y no hayan realizado pagos.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria4</code></p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 2" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 2"><code>CREATE OR REPLACE VIEW clientes_morosos AS
+SELECT fk_cliente
+FROM pedido
+WHERE estado = &#39;Entregado&#39;
+
+EXCEPT
+
+SELECT fk_cliente
+FROM pago;
+
+SELECT *
+FROM clientes_morosos;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-3">
+          <summary>
+            <span class="exercise-number">3.</span>
+            <span>Utilizar la vista clientes_morosos junto con INNER JOIN para mostrar los datos de los clientes sin pagos.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria4</code></p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 3" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 3"><code>SELECT
+    c.pk_cliente,
+    c.nombre_contacto,
+    c.apellido_contacto,
+    c.telefono,
+    c.ciudad
+FROM cliente AS c
+INNER JOIN clientes_morosos AS m   -- uso vista cliente_morosos
+    ON c.pk_cliente = m.fk_cliente;</code></pre>
+          </div>
+        </details>
+
+        <details class="exercise" id="ejercicio-4">
+          <summary>
+            <span class="exercise-number">4.</span>
+            <span>Repite los puntos 2 y 3 para tener la lista de clientes con pagos. Al generar la lista de clientes que hayan pagado (equivalente al punto 3) indica la fecha del pago y el importe.</span>
+          </summary>
+          <div class="exercise-notes">
+            <p><strong>Base de datos</strong> <code>jardineria4</code></p>
+          </div>
+          <div class="exercise-body">
+            <div class="code-toolbar flex flex-wrap items-center justify-between gap-3">
+              <span>MySQL</span>
+              <button class="copy-button" type="button" aria-label="Copiar SQL del ejercicio 4" hidden>Copiar SQL</button>
+            </div>
+            <pre tabindex="0" aria-label="SQL del ejercicio 4"><code>CREATE OR REPLACE VIEW clientes_con_pagos AS
+SELECT fk_cliente
+FROM pedido
+WHERE estado = &#39;Entregado&#39;
+
+INTERSECT
+
+SELECT fk_cliente
+FROM pago;
+
+-- Verificar la vista.
+
+SELECT *
+FROM clientes_con_pagos;
+
+SELECT
+    c.pk_cliente,
+    c.nombre_contacto,
+    c.apellido_contacto,
+    c.telefono,
+    c.ciudad,
+    p.fecha_pago,
+    p.total
+FROM cliente AS c
+INNER JOIN clientes_con_pagos AS v
+    ON c.pk_cliente = v.fk_cliente
+INNER JOIN pago AS p
+    ON c.pk_cliente = p.fk_cliente;</code></pre>
+          </div>
+        </details>
+
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="shell flex flex-wrap justify-between gap-x-8 gap-y-2 py-6">
+      <p>Curso SOC · Bases de Datos MySQL</p>
+      <p>Yolanda Fontanillas</p>
+    </div>
+  </footer>
+</body>
+</html>
